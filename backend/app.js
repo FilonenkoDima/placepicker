@@ -61,4 +61,26 @@ app.put("/user-places", async (req, res) => {
   res.status(200).json({ userPlaces: updatedUserPlaces });
 });
 
+app.delete("/user-places/:id", async (req, res) => {
+  const placeId = req.params.id;
+
+  const userPlacesFileContent = await fs.readFile("./data/user-places.json");
+  const userPlacesData = JSON.parse(userPlacesFileContent);
+
+  const placeIndex = userPlacesData.findIndex((place) => place.id === placeId);
+
+  let updatedUserPlaces = userPlacesData;
+
+  if (placeIndex >= 0) {
+    updatedUserPlaces.splice(placeIndex, 1);
+  }
+
+  await fs.writeFile(
+    "./data/user-places.json",
+    JSON.stringify(updatedUserPlaces)
+  );
+
+  res.status(200).json({ user: updatedUserPlaces });
+});
+
 app.listen(3000);
