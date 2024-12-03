@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { PlacesComponent } from './places/places.component';
+import { AvailablePlacesComponent } from './places/available-places/available-places.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [PlacesComponent],
+  imports: [AvailablePlacesComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
