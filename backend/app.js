@@ -36,4 +36,29 @@ app.get("/user-places", async (req, res) => {
   res.status(200).json({ places });
 });
 
+app.put("/user-places", async (req, res) => {
+  const placeId = req.body.placeId;
+
+  const fileContent = await fs.readFile("./data/places.json");
+  const placesData = JSON.parse(fileContent);
+
+  const place = placesData.find((place) => place.id === placeId);
+
+  const userPlacesFileContent = await fs.readFile("./data/user-places.json");
+  const userPlacesData = JSON.parse(userPlacesFileContent);
+
+  let updatedUserPlaces = userPlacesData;
+
+  if (!userPlacesData.some((p) => p.id === place.id)) {
+    updatedUserPlaces = [...userPlacesData, place];
+  }
+
+  await fs.writeFile(
+    "./data/user-places.json",
+    JSON.stringify(updatedUserPlaces)
+  );
+
+  res.status(200).json({ userPlaces: updatedUserPlaces });
+});
+
 app.listen(3000);
