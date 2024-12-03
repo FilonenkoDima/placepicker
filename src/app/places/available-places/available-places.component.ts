@@ -1,4 +1,5 @@
-import { Component, signal } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
 import { PlacesContainerComponent } from '../places-container/places-container.component';
 import { Place } from '../places.model';
@@ -11,6 +12,22 @@ import { PlacesComponent } from '../places.component';
   templateUrl: './available-places.component.html',
   styleUrl: './available-places.component.css',
 })
-export class AvailablePlacesComponent {
+export class AvailablePlacesComponent implements OnInit {
   places = signal<Place[] | undefined>(undefined);
+  private httpClient = inject(HttpClient);
+  private destroyRef = inject(DestroyRef);
+
+  ngOnInit() {
+    const subscription = this.httpClient
+      .get<{ places: Place[] }>('http://localhost:3000/places')
+      .subscribe({
+        next: (resData) => {
+          console.log(resData.places);
+        },
+      });
+
+    this.destroyRef.onDestroy(() => {
+      subscription.unsubscribe();
+    });
+  }
 }
