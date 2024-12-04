@@ -1,10 +1,8 @@
 import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 
 import { PlacesContainerComponent } from '../places-container/places-container.component';
 import { Place } from '../places.model';
 import { PlacesComponent } from '../places.component';
-import { catchError, map, throwError } from 'rxjs';
 import { PlacesService } from '../places.service';
 
 @Component({
